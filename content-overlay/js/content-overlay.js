@@ -1,0 +1,102 @@
+;(function($, settings) {
+    var app = app || {};
+    var pluginStatus = settings.status || 'active';
+    app.contentOverlay = {
+        init: function() {
+            this.cache();
+
+            this.showOverlay();
+
+            this.events();
+        },
+
+        cache: function() {
+            this.$body = $('body');
+            this.popupTemplate = $('#popupTemplate').html();
+        },
+
+        canLocalStorage: function() {
+            if ( window.localStorage !== undefined )
+                return true;
+            else
+                return false;
+        },
+
+        closePopup: function(e) {
+            e.preventDefault();
+            var $this = this;
+            this.$curtain.fadeOut('slow', function() {
+                $this.$curtain.remove();
+            });
+        },
+
+        events: function() {
+            $('.popup').delegate('.close-btn', 'click', $.proxy(this.closePopup, this));
+        },
+
+        persistData: function() {
+            var localData = localStorage.getItem('content-overlay');
+            var now = new Date();
+            var diff,
+                hrs = 1000 * 60 * 60,
+                day = hrs * 24,
+                week = day * 7,
+                month = week * 4,
+                intervals = {
+                    day: day,
+                    week: week,
+                    month: month
+                };
+
+            var show = false;
+            if ( localData === undefined || localData === null ) {
+                localData = { lastVisit: now.getTime() }
+                localData = JSON.stringify(localData);
+                localStorage.setItem('content-overlay', localData);
+                show = true;
+            } else {
+                diff = now.getTime() - parseInt( JSON.parse( localData).lastVisit );
+                console.log(diff, intervals[settings.interval], settings.interval);
+                if ( diff >= intervals[settings.interval] )
+                    show = true;
+            }
+
+            return show;
+        },
+
+        showOverlay: function() {
+
+            if ( this.canLocalStorage() ) {
+                if ( ! this.persistData() )
+                    return;
+            }
+
+
+            var curtain = $('<div></div>').addClass('curtain');
+            var popup = $('<div></div>').addClass('popup-wrapper');
+
+            curtain.css('display','none');
+            popup.html( this.popupTemplate.replace(/{{content}}/i, settings.content_overlay) );
+            popup.css({
+                'width': settings.width,
+                'height': settings.height,
+                'margin-left': (settings.width / 2) * -1,
+                'margin-top': (settings.height / 2) * -1
+            });
+            curtain.append( popup );
+
+            this.$body.append( curtain );
+            this.$curtain = curtain;
+
+            curtain.fadeIn('slow');
+        }
+     };
+
+    if ( pluginStatus === 'active' ) {
+        var delay = settings.delay || 1;
+        setTimeout(function(){
+            app.contentOverlay.init();
+        }, delay  * 1000);
+    }
+
+})(jQuery, contentSettings);

@@ -38,27 +38,34 @@
             var localData = localStorage.getItem('content-overlay');
             var now = new Date();
             var diff,
-                hrs = 1000 * 60 * 60,
+                min = 1000 * 60,
+                hrs = min * 60,
                 day = hrs * 24,
                 week = day * 7,
                 month = week * 4,
                 intervals = {
+                    min: min,
+                    hour: hrs,
                     day: day,
                     week: week,
                     month: month
                 };
 
             var show = false;
+
+            newData = { lastVisit: now.getTime() }
+            newData = JSON.stringify(newData);
+
             if ( localData === undefined || localData === null ) {
-                localData = { lastVisit: now.getTime() }
-                localData = JSON.stringify(localData);
-                localStorage.setItem('content-overlay', localData);
+                localStorage.setItem('content-overlay', newData);
                 show = true;
             } else {
-                diff = now.getTime() - parseInt( JSON.parse( localData).lastVisit );
-                console.log(diff, intervals[settings.interval], settings.interval);
-                if ( diff >= intervals[settings.interval] )
+                diff = now.getTime() - parseInt( JSON.parse( localData ).lastVisit );
+                //console.log(diff, intervals[settings.interval], settings.interval);
+                if ( diff >= intervals[settings.interval] ) {
                     show = true;
+                    localStorage.setItem('content-overlay', newData);
+                }
             }
 
             return show;

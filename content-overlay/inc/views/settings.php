@@ -30,6 +30,8 @@
                 <td width="20%"><?php _e( 'Repeat every:', CONTOVER_SLUG ) ?></td>
                 <td>
                     <select name="content_overlay_settings[interval]" id="content_overlay_settings_interval">
+                        <option value="min" <?php echo $options['interval'] == 'min' ? 'selected' : '' ?>><?php _e( 'Minute', CONTOVER_SLUG ) ?></option>
+                        <option value="hour" <?php echo $options['interval'] == 'hour' ? 'selected' : '' ?>><?php _e( 'Hour', CONTOVER_SLUG ) ?></option>
                         <option value="day" <?php echo $options['interval'] == 'day' ? 'selected' : '' ?>><?php _e( 'Day', CONTOVER_SLUG ) ?></option>
                         <option value="week" <?php echo $options['interval'] == 'week' ? 'selected' : '' ?>><?php _e( 'Week', CONTOVER_SLUG ) ?></option>
                         <option value="month" <?php echo $options['interval'] == 'month' ? 'selected' : '' ?>><?php _e( 'Month', CONTOVER_SLUG ) ?></option>

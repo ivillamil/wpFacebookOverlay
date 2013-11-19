@@ -32,7 +32,7 @@ class Content_Overlay {
             $page_title  = __( 'Content Overlay', CONTOVER_SLUG ),
             $menu_title  = __( 'Content Overlay', CONTOVER_SLUG ),
             $capability  = 'activate_plugins',
-            $menu_slug   = 'options-general.php',
+            $menu_slug   = 'content_overlay',
             $callback    = array( &$this, 'display_options' )
         );
     }

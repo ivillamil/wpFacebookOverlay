@@ -16,10 +16,14 @@
     z-index: 0;
 }
 .popup iframe,
+.popup img,
 .popup table,
 .popup div,
 .popup ul {
     max-width: 100% !important;
+}
+.popup img {
+    height: auto !important;
 }
 .popup .close-btn {
     background: #000;

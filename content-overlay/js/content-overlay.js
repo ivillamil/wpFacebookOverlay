@@ -81,14 +81,16 @@
 
             var curtain = $('<div></div>').addClass('curtain');
             var popup = $('<div></div>').addClass('popup-wrapper');
+            var width = (settings.width <= window.innerWidth) ? settings.width : window.innerWidth;
+            var height = (settings.width <= window.innerHeight) ? settings.height : ((settings.height * window.innerWidth)/settings.width);
 
             curtain.css('display','none');
             popup.html( this.popupTemplate.replace(/{{content}}/i, settings.content_overlay) );
             popup.css({
-                'width': settings.width,
-                'height': settings.height,
-                'margin-left': (settings.width / 2) * -1,
-                'margin-top': (settings.height / 2) * -1
+                'width': width,
+                'height': height,
+                'margin-left': (width / 2) * -1,
+                'margin-top': (height / 2) * -1
             });
             curtain.append( popup );
 
